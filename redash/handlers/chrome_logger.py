@@ -13,7 +13,9 @@ def log_queries():
     for q in get_debug_queries():
         total_duration += q.duration
         queries_count += 1
-        chromelogger.info(q.statement % q.parameters)
+        # chromelogger.info(q.statement % q.parameters)
+        # remove query parameters to fix ERR_RESPONSE_HEADERS_TOO_BIG error
+        chromelogger.info(q.statement)
         chromelogger.info("Runtime: {:.2f}ms".format(1000 * q.duration))
 
     chromelogger.info("{} queries executed in {:.2f}ms.".format(queries_count, total_duration*1000))
@@ -30,7 +32,7 @@ def chrome_log(response):
         request.method, request.path, response.status_code, request_duration, queries_count, queries_duration)
 
     chromelogger.group_collapsed(group_name)
-    
+
     endpoint = (request.endpoint or 'unknown').replace('.', '_')
     chromelogger.info('Endpoint: {}'.format(endpoint))
     chromelogger.info('Content Type: {}'.format(response.content_type))
@@ -49,6 +51,6 @@ def chrome_log(response):
 
 def init_app(app):
     if not app.debug:
-        return 
+        return
 
     app.after_request(chrome_log)
