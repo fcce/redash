@@ -3,13 +3,15 @@ This will eventually replace all the `to_dict` methods of the different model
 classes we have. This will ensure cleaner code and better
 separation of concerns.
 """
-from funcy import project
-
 from flask_login import current_user
+from flask import make_response, request
 
 from redash import models
 from redash.permissions import has_access, view_only
 from redash.utils import json_loads
+
+# from redash.utils import json_loads
+from redash.utils import (collect_parameters_from_request, gen_query_hash, json_dumps, utcnow, json_loads)
 
 
 def public_widget(widget):
@@ -22,8 +24,20 @@ def public_widget(widget):
         'created_at': widget.created_at
     }
 
-    if widget.visualization and widget.visualization.id:
-        query_data = models.QueryResult.query.get(widget.visualization.query_rel.latest_query_data_id).to_dict()
+    if (widget.visualization and
+            widget.visualization.id and
+            widget.visualization.query_rel is not None):
+        q = widget.visualization.query_rel
+        # make sure the widget's query has a latest_query_data_id that is
+        # not null so public dashboards work
+        if q.latest_query_data_id is None:
+            # this import is inline since it triggers a circular
+            # import otherwise
+            parameter_values = collect_parameters_from_request(request.args)
+            from redash.handlers.query_results import run_query_sync
+            query_data = run_query_sync(q.data_source, parameter_values , q.query_text).to_dict()
+        else:
+            query_data = q.latest_query_data.to_dict()
         res['visualization'] = {
             'type': widget.visualization.type,
             'name': widget.visualization.name,
@@ -33,8 +47,8 @@ def public_widget(widget):
             'created_at': widget.visualization.created_at,
             'query': {
                 'query': ' ',  # workaround, as otherwise the query data won't be loaded.
-                'name': widget.visualization.query_rel.name,
-                'description': widget.visualization.query_rel.description,
+                'name': q.name,
+                'description': q.description,
                 'options': {},
                 'latest_query_data': query_data
             }

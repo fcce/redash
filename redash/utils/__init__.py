@@ -167,6 +167,24 @@ class UnicodeWriter:
             self.writerow(row)
 
 
+def check_if_range_value(k):
+    if k.endswith('.start') or k.endswith('.end'):
+        return True
+    return False
+
+# hotfix {a.start: 1} => {a: {start: 1}}
+def range_value_to_nested_json(parameters):
+    nested_parameters = {}
+    for k, v in parameters.iteritems():
+        if isinstance(v, unicode) and check_if_range_value(k):
+            nest_key, nest_value = k.split('.', 1)
+            if nest_key not in nested_parameters:
+                nested_parameters[nest_key] = {}
+            nested_parameters[nest_key][nest_value] = v
+        else:
+            nested_parameters[k] = v
+    return nested_parameters
+
 def collect_parameters_from_request(args):
     parameters = {}
 
@@ -174,7 +192,7 @@ def collect_parameters_from_request(args):
         if k.startswith('p_'):
             parameters[k[2:]] = v
 
-    return parameters
+    return range_value_to_nested_json(parameters)
 
 
 def base_url(org):

@@ -2,9 +2,17 @@ import logoUrl from '@/assets/images/redash_icon_small.png';
 import template from './public-dashboard-page.html';
 import './dashboard.less';
 
+function jsonToQueryString(json) {
+    return '?' +
+        Object.keys(json).map(function(key) {
+            return encodeURIComponent(key) + '=' +
+                encodeURIComponent(json[key]);
+        }).join('&');
+}
+
 function loadDashboard($http, $route) {
   const token = $route.current.params.token;
-  return $http.get(`api/dashboards/public/${token}`).then(response => response.data);
+  return $http.get(`api/dashboards/public/${token}?${params}`).then(response => response.data);
 }
 
 const PublicDashboardPage = {
