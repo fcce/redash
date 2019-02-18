@@ -1,0 +1,43 @@
+# This configuration file is for **development** setup. For production, refer to
+# docker-compose.production.yml.
+version: '3'
+services:
+  server:
+    build: .
+    command: server
+    depends_on:
+      - redis
+    ports:
+      - "5000:5000"
+    volumes:
+      - ".:/app"
+    environment:
+      PYTHONUNBUFFERED: 0
+      REDASH_LOG_LEVEL: "INFO"
+      REDASH_ALLOW_SCRIPTS_IN_USER_INPUT: "true"
+      REDASH_ALLOW_PARAMETERS_IN_EMBEDS: "true"
+      REDASH_THROTTLE_LOGIN_PATTERN: "500/minute"
+      REDASH_ADDITIONAL_QUERY_RUNNERS: "redash.query_runner.python"
+      REDASH_REDIS_URL: "redis://redis:6379/0"
+      REDASH_DATABASE_URL: "postgresql://postgres@postgres/postgres"
+  worker:
+    build: .
+    command: scheduler
+    volumes:
+      - ".:/app"
+    depends_on:
+      - server
+    environment:
+      PYTHONUNBUFFERED: 0
+      REDASH_LOG_LEVEL: "INFO"
+      REDASH_ALLOW_SCRIPTS_IN_USER_INPUT: "true"
+      REDASH_ALLOW_PARAMETERS_IN_EMBEDS: "true"
+      REDASH_THROTTLE_LOGIN_PATTERN: "500/minute"
+      REDASH_ADDITIONAL_QUERY_RUNNERS: "redash.query_runner.python"
+      REDASH_REDIS_URL: "redis://redis:6379/0"
+      REDASH_DATABASE_URL: "postgresql://postgres@postgres/postgres"
+      QUEUES: "queries,scheduled_queries,celery"
+      WORKERS_COUNT: 2
+  redis:
+    image: redis:3-alpine
+    restart: unless-stopped
