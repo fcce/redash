@@ -17,7 +17,8 @@ ARG skip_ds_deps
 # change.
 COPY requirements.txt requirements_dev.txt requirements_all_ds.txt ./
 RUN pip install -r requirements.txt -r requirements_dev.txt --index-url http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com
-RUN if [ "x$skip_ds_deps" = "x" ] ; then pip install -r requirements_all_ds.txt ; else echo "Skipping pip install -r requirements_all_ds.txt" ; fi
+
+RUN if [ "x$skip_ds_deps" = "x" ] ; then pip install -r requirements_all_ds.txt --index-url http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com ; else echo "Skipping pip install -r requirements_all_ds.txt" ; fi
 
 COPY . /app
 COPY --from=frontend-builder /frontend/client/dist /app/client/dist
