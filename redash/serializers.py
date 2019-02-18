@@ -38,6 +38,7 @@ def public_widget(widget):
             query_data = run_query_sync(q.data_source, parameter_values , q.query_text).to_dict()
         else:
             query_data = q.latest_query_data.to_dict()
+
         res['visualization'] = {
             'type': widget.visualization.type,
             'name': widget.visualization.name,

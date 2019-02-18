@@ -145,7 +145,7 @@ class User(TimestampMixin, db.Model, BelongsToOrgMixin, UserMixin, PermissionsCh
             'active_at': self.active_at,
             'is_invitation_pending': self.is_invitation_pending,
             'is_email_verified': self.is_email_verified,
-            'api_key': self.api_key
+            'api_key': self.api_key,
         }
 
         if self.password_hash is None:

@@ -27,6 +27,10 @@ create_db() {
   exec /app/manage.py database create_tables
 }
 
+drop_db() {
+  exec /app/manage.py database drop_tables
+}
+
 help() {
   echo "Redash Docker."
   echo ""

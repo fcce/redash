@@ -16,6 +16,10 @@ services:
     environment:
       PYTHONUNBUFFERED: 0
       REDASH_LOG_LEVEL: "INFO"
+      REDASH_ALLOW_SCRIPTS_IN_USER_INPUT: "true"
+      REDASH_ALLOW_PARAMETERS_IN_EMBEDS: "true"
+      REDASH_THROTTLE_LOGIN_PATTERN: "500/minute"
+      REDASH_ADDITIONAL_QUERY_RUNNERS: "redash.query_runner.python"
       REDASH_REDIS_URL: "redis://redis:6379/0"
       REDASH_DATABASE_URL: "postgresql://postgres@postgres/postgres"
   worker:
@@ -28,6 +32,10 @@ services:
     environment:
       PYTHONUNBUFFERED: 0
       REDASH_LOG_LEVEL: "INFO"
+      REDASH_ALLOW_SCRIPTS_IN_USER_INPUT: "true"
+      REDASH_ALLOW_PARAMETERS_IN_EMBEDS: "true"
+      REDASH_THROTTLE_LOGIN_PATTERN: "500/minute"
+      REDASH_ADDITIONAL_QUERY_RUNNERS: "redash.query_runner.python"
       REDASH_REDIS_URL: "redis://redis:6379/0"
       REDASH_DATABASE_URL: "postgresql://postgres@postgres/postgres"
       QUEUES: "queries,scheduled_queries,celery"

@@ -12,6 +12,7 @@ function jsonToQueryString(json) {
 
 function loadDashboard($http, $route) {
   const token = $route.current.params.token;
+  const params = jsonToQueryString($route.current.params);
   return $http.get(`api/dashboards/public/${token}?${params}`).then(response => response.data);
 }
 
