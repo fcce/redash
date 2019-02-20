@@ -179,7 +179,6 @@ function QueryResultService($resource, $timeout, $q, QueryResultError) {
       if (this.job.error === 'None') {
         return undefined;
       }
-
       return this.job.error;
     }
 
@@ -533,7 +532,6 @@ function QueryResultService($resource, $timeout, $q, QueryResultError) {
 
     static getByQueryId(id, parameters, maxAge) {
       const queryResult = new QueryResult();
-
       $resource('api/queries/:id/results', { id: '@id' }, { post: { method: 'POST' } }).post(
         {
           id,

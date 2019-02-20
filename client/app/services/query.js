@@ -457,7 +457,9 @@ function QueryResource(
     }
 
     const parameters = this.getParameters();
-    const missingParams = parameters.getMissing();
+    // HotFix TODO add params validate
+    const missingParams = [];
+    // parameters.getMissing();
 
     if (missingParams.length > 0) {
       let paramsWord = 'parameter';

@@ -86,7 +86,8 @@ class ParameterizedQuery(object):
         self.parameters = {}
 
     def apply(self, parameters):
-        invalid_parameter_names = [key for (key, value) in parameters.iteritems() if not self._valid(key, value)]
+        # HotFix TODO add params validate
+        invalid_parameter_names = False#[key for (key, value) in parameters.iteritems() if not self._valid(key, value)]
         if invalid_parameter_names:
             raise InvalidParameterError(invalid_parameter_names)
         else:

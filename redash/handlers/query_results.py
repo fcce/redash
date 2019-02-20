@@ -27,8 +27,9 @@ def error_response(message):
 def run_query_sync(data_source, parameter_values, query_text, max_age=0):
     query = ParameterizedQuery(query_text).apply(parameter_values)
 
-    if query.missing_params:
-        raise Exception('Missing parameter value for: {}'.format(", ".join(query.missing_params)))
+    # HotFix TODO add params validate
+    # if query.missing_params:
+        # raise Exception('Missing parameter value for: {}'.format(", ".join(query.missing_params)))
 
     if max_age <= 0:
         query_result = None
@@ -75,8 +76,9 @@ def run_query(data_source, parameter_values, query_text, query_id, max_age=0, pa
 
     query = ParameterizedQuery(query_text, parameter_schema).apply(parameter_values)
 
-    if query.missing_params:
-        return error_response(u'Missing parameter value for: {}'.format(u", ".join(query.missing_params)))
+    # HotFix TODO add params validate
+    # if query.missing_params:
+        # return error_response(u'Missing parameter value for: {}'.format(u", ".join(query.missing_params)))
 
     if max_age == 0:
         query_result = None
