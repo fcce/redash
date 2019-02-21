@@ -134,7 +134,7 @@ export class ParameterValueInput extends React.Component {
       <InputNumber
         className={'form-control ' + className}
         defaultValue={!isNaN(value) && value || 0}
-        onChange={onSelect}
+        onBlur={event => onSelect(event.target.value)}
       />
     );
   }
@@ -145,7 +145,7 @@ export class ParameterValueInput extends React.Component {
       <Input
         className={'form-control ' + className}
         defaultValue={value || ''}
-        onChange={event => onSelect(event.target.value)}
+        onBlur={event => onSelect(event.target.value)}
       />
     );
   }

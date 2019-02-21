@@ -99,10 +99,8 @@ class ParameterizedQuery(object):
 
     def _valid(self, name, value):
         definition = next((definition for definition in self.schema if definition["name"] == name), None)
-
         if not definition:
             return True
-
         if value == None:
             return True
 

@@ -1,5 +1,6 @@
 import logging
 import time
+import re
 
 from flask import make_response, request
 from flask_login import current_user
@@ -235,6 +236,20 @@ class QueryResultResource(BaseResource):
 
         if query_id is not None:
             query = get_object_or_404(models.Query.get_by_id_and_org, query_id, self.current_org)
+            allow_blank_params = re.findall('{#[^}]+}', query.query_text)
+            allow_blank_param_keys = map(lambda x: x[2:-1] , allow_blank_params )
+            for i in query.options.get('parameters', []):
+                allow_blank = True
+                if i['name'] not in allow_blank_param_keys:
+                    allow_blank = False
+
+                param_is_blank = False
+                if i['name'] not in parameter_values.keys():
+                    param_is_blank = True
+
+                if (not allow_blank) and param_is_blank:
+                    parameter_values[i['name']] = i['value']
+
             if query_result is None and query is not None:
                 if settings.ALLOW_PARAMETERS_IN_EMBEDS:
                     query_result = run_query_sync(query.data_source, parameter_values, query.query_text, max_age=max_age)
