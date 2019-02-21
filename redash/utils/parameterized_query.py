@@ -87,7 +87,8 @@ class ParameterizedQuery(object):
 
     def apply(self, parameters):
         # HotFix TODO add params validate
-        invalid_parameter_names = False#[key for (key, value) in parameters.iteritems() if not self._valid(key, value)]
+        # invalid_parameter_names = False#[key for (key, value) in parameters.iteritems() if not self._valid(key, value)]
+        invalid_parameter_names = [key for (key, value) in parameters.iteritems() if not self._valid(key, value)]
         if invalid_parameter_names:
             raise InvalidParameterError(invalid_parameter_names)
         else:
@@ -100,6 +101,9 @@ class ParameterizedQuery(object):
         definition = next((definition for definition in self.schema if definition["name"] == name), None)
 
         if not definition:
+            return True
+
+        if value == None:
             return True
 
         validators = {
