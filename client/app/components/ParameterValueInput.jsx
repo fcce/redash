@@ -166,7 +166,7 @@ export class ParameterValueInput extends React.Component {
     }
   }
 }
-
+// setValue 清空刷新数据
 export default function init(ngModule) {
   ngModule.component('parameterValueInput', {
     template: `

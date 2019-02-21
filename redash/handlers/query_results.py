@@ -230,15 +230,13 @@ class QueryResultResource(BaseResource):
 
         query_result = None
         query = None
-
         if query_result_id:
             query_result = get_object_or_404(models.QueryResult.get_by_id_and_org, query_result_id, self.current_org)
 
         if query_id is not None:
             query = get_object_or_404(models.Query.get_by_id_and_org, query_id, self.current_org)
-
             if query_result is None and query is not None:
-                if settings.ALLOW_PARAMETERS_IN_EMBEDS and parameter_values:
+                if settings.ALLOW_PARAMETERS_IN_EMBEDS:
                     query_result = run_query_sync(query.data_source, parameter_values, query.query_text, max_age=max_age)
                 elif query.latest_query_data_id is not None:
                     query_result = get_object_or_404(models.QueryResult.get_by_id_and_org, query.latest_query_data_id, self.current_org)

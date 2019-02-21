@@ -70,6 +70,15 @@ function ParametersDirective($location, $uibModal) {
             const params = extend({}, $location.search());
             scope.parameters.forEach((param) => {
               extend(params, param.toUrlParams());
+              if (param.getValue() === null) {
+                const rangeKeys = ['datetime-range', 'date-range', 'datetime-range-with-seconds'];
+                if (rangeKeys.includes(param.type)) {
+                  delete (params[param.urlPrefix + param.name + '.start']);
+                  delete (params[param.urlPrefix + param.name + '.end']);
+                } else {
+                  delete (params[param.urlPrefix + param.name]);
+                }
+              }
             });
             $location.search(params);
           },
