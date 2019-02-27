@@ -114,6 +114,8 @@ def forgot_password(org_slug=None):
         try:
             org = current_org._get_current_object()
             user = models.User.get_by_email_and_org(email, org)
+            user.is_invitation_pending = True
+            models.db.session.commit()
             send_password_reset_email(user)
         except NoResultFound:
             logging.error("No user found for forgot password: %s", email)
