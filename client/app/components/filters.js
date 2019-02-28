@@ -1,3 +1,4 @@
+import { includes, without } from 'lodash';
 import template from './filters.html';
 
 const FiltersComponent = {
@@ -13,13 +14,13 @@ const FiltersComponent = {
       this.onChange({ filter, $modal: modal });
     };
 
-    this.itemGroup = (item) => {
-      if (item === '*' || item === '-') {
-        return '';
+    this.multiFilterSelectListener = (filter, modal) => {
+      if (includes(['*', '-'], modal)) {
+        filter.current = without([modal], '-');
       }
-
-      return 'Values';
+      this.onChange({ filter, $modal: modal });
     };
+    this.itemGroup = item => (includes(['*', '-'], item) ? '' : 'Values');
   },
 };
 

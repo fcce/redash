@@ -226,21 +226,23 @@ function QueryResultService($resource, $timeout, $q, QueryResultError) {
         this.filterFreeze = filterFreeze;
 
         if (filters) {
-          filters.forEach((filter) => {
-            if (filter.multiple && includes(filter.current, ALL_VALUES)) {
-              filter.current = filter.values.slice(2);
-            }
+          // filters.forEach((filter) => {
+          //   if (filter.multiple && includes(filter.current, ALL_VALUES)) {
+          //     filter.current = filter.values.slice(2);
+          //   }
 
-            if (filter.multiple && includes(filter.current, NONE_VALUES)) {
-              filter.current = [];
-            }
-          });
+          //   if (filter.multiple && includes(filter.current, NONE_VALUES)) {
+          //     filter.current = [];
+          //   }
+          // });
 
           this.filteredData = this.query_result.data.rows.filter(row => filters.reduce((memo, filter) => {
             if (!isArray(filter.current)) {
               filter.current = [filter.current];
             }
-
+            if (filter.current[0] === ALL_VALUES) {
+              return (memo);
+            }
             return (
               memo &&
               some(filter.current, (v) => {
@@ -407,7 +409,7 @@ function QueryResultService($resource, $timeout, $q, QueryResultError) {
           filter.values.push(row[filter.name]);
           if (filter.values.length === 1) {
             if (filter.multiple) {
-              filter.current = [row[filter.name]];
+              filter.current = [ALL_VALUES];
             } else {
               filter.current = row[filter.name];
             }
