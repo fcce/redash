@@ -20,6 +20,8 @@ RUN pip install -r requirements.txt -r requirements_dev.txt --index-url http://m
 
 RUN if [ "x$skip_ds_deps" = "x" ] ; then pip install -r requirements_all_ds.txt --index-url http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com ; else echo "Skipping pip install -r requirements_all_ds.txt" ; fi
 
+RUN ip -4 route list match 0/0 | awk '{print $3 "host.docker.internal"}' >> /etc/hosts
+
 COPY . /app
 COPY --from=frontend-builder /frontend/client/dist /app/client/dist
 
