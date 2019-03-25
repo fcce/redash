@@ -34,6 +34,7 @@ module.exports = {
     'react/jsx-one-expression-per-line': 'off',
     "react/jsx-uses-react": "error",
     "react/jsx-uses-vars": "error",
+    "prefer-arrow-callback": "warn",
     'react/jsx-wrap-multilines': 'warn',
     'react/no-access-state-in-setstate': 'warn',
     "react/prefer-stateless-function": "warn",

@@ -28,7 +28,7 @@
           <span class="small hidden-print"><i class="zmdi zmdi-time-restore"></i> <span am-time-ago="$ctrl.queryResult.getUpdatedAt()"></span></span>
           <span class="small visible-print"><i class="zmdi zmdi-time-restore"></i> {{$ctrl.queryResult.getUpdatedAt() | dateTime}}</span>
         </div>
-        <div class="col-xs-6 text-right hidden-print">
+        <div ng-show="$ctrl.currentUser.hasPermission('export_query')" class="col-xs-6 text-right hidden-print">
           <div class="btn-group" uib-dropdown>
             <button type="button" class="btn btn-default btn-sm dropdown-toggle" aria-haspopup="true" uib-dropdown-toggle
                     aria-expanded="false">

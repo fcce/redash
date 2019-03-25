@@ -54,6 +54,7 @@ const EditTextBoxComponent = {
 
 function DashboardWidgetCtrl($scope, $location, $uibModal, $window, $rootScope, Events, currentUser) {
   this.canViewQuery = currentUser.hasPermission('view_query');
+  this.canExportQuery = currentUser.hasPermission('export_query');
 
   this.editTextBox = () => {
     this.widget.existing_text = this.widget.text;

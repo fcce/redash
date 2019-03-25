@@ -3,11 +3,11 @@ import template from './public-dashboard-page.html';
 import './dashboard.less';
 
 function jsonToQueryString(json) {
-    return '?' +
-        Object.keys(json).map(function(key) {
-            return encodeURIComponent(key) + '=' +
-                encodeURIComponent(json[key]);
-        }).join('&');
+  return '?' +
+    Object.keys(json).map(function (key) {
+      return encodeURIComponent(key) + '=' +
+        encodeURIComponent(json[key]);
+    }).join('&');
 }
 
 function loadDashboard($http, $route) {

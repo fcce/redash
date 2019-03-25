@@ -255,7 +255,7 @@
       <div class="bottom-controller-container" ng-if="showDataset">
         <div class="bottom-controller">
 
-          <button class="m-r-5 btn btn-default btn-edit-visualisation" ng-click="openVisualizationEditor(selectedTab)" ng-if="!query.isNew() && canEdit"><span class="fa fa-edit"></span><span class="hidden-xs hidden-s hidden-m"> Edit Visualization</span></button>
+          <button class="m-r-5 btn btn-default btn-edit-visualisation" ng-click="openVisualizationEditor(selectedTab)" ng-if="!query.isNew() && canEdit"><span class="fa fa-edit"></span><span class="hidden-xs hidden-s hidden-m"> Edit Visualization 1</span></button>
 
           <div class="m-r-5 btn-group dropup" uib-dropdown>
             <button type="button" class="btn btn-default dropup-toggle" aria-haspopup="true"
@@ -273,12 +273,12 @@
                   <span class="zmdi zmdi-code"></span> Embed elsewhere
                 </a>
               </li>
-              <li>
+              <li ng-show="currentUser.hasPermission('export_query')">
                 <a query-result-link target="_self" ng-disabled="queryExecuting || !queryResult.getData()">
                   <span class="fa fa-file-o"></span> Download as CSV File
                 </a>
               </li>
-              <li>
+              <li ng-show="currentUser.hasPermission('export_query')">
                 <a query-result-link file-type="xlsx" target="_self" ng-disabled="queryExecuting || !queryResult.getData()">
                   <span class="fa fa-file-excel-o"></span> Download as Excel File
                 </a>
